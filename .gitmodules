@@ -1,0 +1,3 @@
+[submodule "ogra/static/javascripts/ogra"]
+	path = ogra/static/javascripts/ogra
+	url = git@github.com:shenek/ogra.git
