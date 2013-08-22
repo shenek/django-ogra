@@ -7,7 +7,12 @@
         {{ charts|ogra_charts }}
     </head>
     <body>
-        <h1>Data</h1>
+        <h1>Backends</h1>
+        <a href='?backend=raphael'>Raphael</a>
+        <a href='?backend=high'>Highcharts</a>
+        <a href='?backend=google'>Google</a>
+        <a href='?backend=dygraphs'>Dygraphs</a>
+        <a href='?backend=flot'>Flot</a>
         <h1>Pie Chart</h1>
         <div id='{{ charts.0.dom_id }}'></div>
         <h1>Bar Chart</h1>
