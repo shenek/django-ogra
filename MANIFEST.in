@@ -1,0 +1,6 @@
+include LICENSE
+include README.rst
+include ogra/static/javascripts/ogra/ogra.js
+recursive-include ogra *.py
+recursive-include docs *.txt
+recursive-include docs *.rst

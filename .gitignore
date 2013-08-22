@@ -1,3 +1,5 @@
+/dist
+*.egg-info
 *.swp
 *.log
 *.pot
