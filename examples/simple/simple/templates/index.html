@@ -1,0 +1,18 @@
+{% load static %}
+{% load ogra %}
+<html>
+    <head>
+        <title>Django ogra - example</title>
+        <script type="text/javascript" src='{% static "javascripts/ogra/ogra.js" %}'></script>
+        {{ charts|ogra_charts }}
+    </head>
+    <body>
+        <h1>Data</h1>
+        <h1>Pie Chart</h1>
+        <div id='{{ charts.0.dom_id }}'></div>
+        <h1>Bar Chart</h1>
+        <div id='{{ charts.1.dom_id }}'></div>
+        <h1>Line Chart</h1>
+        <div id='{{ charts.2.dom_id }}'></div>
+    </body>
+</html>
