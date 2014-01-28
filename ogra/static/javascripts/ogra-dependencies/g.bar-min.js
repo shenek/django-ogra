@@ -1,0 +1,1 @@
+../../../../g.raphael/min/g.bar-min.js
