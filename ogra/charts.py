@@ -108,6 +108,7 @@ class OgraColumnChart(OgraChart):
     top = 30
     height = 200
     width = 320
+    reformat_numbers = 'true'
 
     def __init__(self, name, **kwargs):
         super(OgraColumnChart, self).__init__(name, **kwargs)
@@ -120,7 +121,7 @@ class OgraColumnChart(OgraChart):
     def javascript(self):
         res = []
         res.append('var %s_data = %s;' % (self.dom_id, simplejson.dumps(self.data)))
-        res.append("Ogra.graph('%s', %s_data, 'column', '%s', { x: %s, y: %s, gwidth: %s, gheight: %s, grid_num: %s, title: '%s' });\n" % (
+        res.append("Ogra.graph('%s', %s_data, 'column', '%s', { x: %s, y: %s, gwidth: %s, gheight: %s, grid_num: %s, title: '%s', reformat_numbers: %s });\n" % (
             self.dom_id,
             self.dom_id,
             self.backend,
@@ -130,6 +131,7 @@ class OgraColumnChart(OgraChart):
             self.height,
             self.grid_num,
             self.title,
+            self.reformat_numbers,
         ))
         return '\n'.join(res)
 
