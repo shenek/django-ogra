@@ -103,7 +103,7 @@ class OgraPieChart(OgraChart):
 
 
 class OgraColumnChart(OgraChart):
-    grid_num = 3
+    grid_num = 4
     left = 80
     top = 30
     height = 200
