@@ -88,17 +88,10 @@ class OgraChart(object):
 
 
 class OgraPieChart(OgraChart):
-    type = 'pie'
+    type = "pie"
 
     def __init__(self, name, **kwargs):
         super(OgraPieChart, self).__init__(name, **kwargs)
-        self.options.update({
-            'left': 200,
-            'top': 150,
-            'radius': 100,
-            'preserveValues': "true",
-            'reformat_numbers': "reduce_number",
-        })
 
     @property
     def dom_id(self):
@@ -112,29 +105,21 @@ class OgraPieChart(OgraChart):
             self.dom_id,
             self.dom_id,
             self.backend,
-            self.options['left'],
-            self.options['top'],
-            self.options['radius'],
+            self.options.get('left', 200),
+            self.options.get('top', 150),
+            self.options.get('radius', 100),
             self.title,
-            "true" if self.options['preserveValues'] else "false",
-            self.options['reformat_numbers'],
+            self.options.get('preserve_values', "true"),
+            self.options.get('reformat_numbers', "reduce_number"),
         ))
         return '\n'.join(res)
 
 
 class OgraColumnChart(OgraChart):
-    type = 'column'
+    type = "column"
 
     def __init__(self, name, **kwargs):
         super(OgraColumnChart, self).__init__(name, **kwargs)
-        self.options.update({
-            'left': 80,
-            'top': 30,
-            'height': 200,
-            'width': 320,
-            'grid_num': 4,
-            'reformat_numbers': True,
-        })
 
     @property
     def dom_id(self):
@@ -148,28 +133,22 @@ class OgraColumnChart(OgraChart):
             self.dom_id,
             self.dom_id,
             self.backend,
-            self.options['left'],
-            self.options['top'],
-            self.options['width'],
-            self.options['height'],
-            self.options['grid_num'],
+            self.options.get('left', 80),
+            self.options.get('top', 30),
+            self.options.get('width', 320),
+            self.options.get('height', 200),
+            self.options.get('grid_num', 4),
             self.title,
-            "true" if self.options['reformat_numbers'] else "false",
+            self.options.get('reformat_numbers', "true"),
         ))
         return '\n'.join(res)
 
 
 class OgraLineChart(OgraChart):
-    type = 'line'
+    type = "line"
 
     def __init__(self, name, **kwargs):
         super(OgraLineChart, self).__init__(name, **kwargs)
-        self.options.update({
-            'left': 80,
-            'top': 30,
-            'height': 500,
-            'width': 1000,
-        })
 
     @property
     def dom_id(self):
@@ -183,10 +162,10 @@ class OgraLineChart(OgraChart):
             self.dom_id,
             self.dom_id,
             self.backend,
-            self.options['left'],
-            self.options['top'],
-            self.options['width'],
-            self.options['height'],
+            self.options.get('left', 80),
+            self.options.get('top', 30),
+            self.options.get('height', 500),
+            self.options.get('width', 1000),
             self.title,
         ))
         return '\n'.join(res)
