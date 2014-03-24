@@ -1,5 +1,6 @@
-from django.utils import simplejson
+import json
 from django.db.models.query import QuerySet
+
 
 def convert_to_data_table(data, fields=None, label_formater=None):
     res = {}
@@ -54,14 +55,16 @@ def convert_to_data_table(data, fields=None, label_formater=None):
 
 
 class OgraChart(object):
+    type = None
 
     def __init__(self, name, **kwargs):
         self.name = name
-        self.fields = kwargs['fields'] if 'fields' in kwargs else None
-        self._data = kwargs['data'] if 'data' in kwargs else []
-        self.title = kwargs['title'] if 'title' in kwargs else ""
-        self.label_formater = kwargs['label_formater'] if 'label_formater' in kwargs else None
+        self.fields = kwargs.get('fields')
+        self._data = kwargs.get('data', [])
+        self.title = kwargs.get('title', '')
+        self.label_formater = kwargs.get('label_formater')
         self.backend = kwargs.get('backend', 'raphael')
+        self.options = kwargs.get('options', {})
 
     @property
     def dom_id(self):
@@ -72,13 +75,30 @@ class OgraChart(object):
         res = self._data if self._data else []
         return convert_to_data_table(res, self.fields, self.label_formater)
 
+    @property
+    def json(self):
+        res = {
+            'element_id': self.dom_id,
+            'data': self.data,
+            'chart_type': self.type,
+            'library': self.backend,
+            'options': self.options,
+        }
+        return json.dumps(res)
+
 
 class OgraPieChart(OgraChart):
-    left = 200
-    top = 150
-    radius = 100
-    preserveValues = 'true'  # == don't sort the data before creating piechart before ('true'/'false')
-    reformat_numbers = 'reduce_number'
+    type = 'pie'
+
+    def __init__(self, name, **kwargs):
+        super(OgraPieChart, self).__init__(name, **kwargs)
+        self.options.update({
+            'left': 200,
+            'top': 150,
+            'radius': 100,
+            'preserveValues': "true",
+            'reformat_numbers': "reduce_number",
+        })
 
     @property
     def dom_id(self):
@@ -87,31 +107,34 @@ class OgraPieChart(OgraChart):
     @property
     def javascript(self):
         res = []
-        res.append('var %s_data = %s;' % (self.dom_id, simplejson.dumps(self.data)))
+        res.append('var %s_data = %s;' % (self.dom_id, json.dumps(self.data)))
         res.append("Ogra.graph('%s', %s_data, 'pie', '%s', { x: %s, y: %s, radius: %s, title: '%s', preserveValues: %s, reformat_numbers: '%s' });\n" % (
             self.dom_id,
             self.dom_id,
             self.backend,
-            self.left,
-            self.top,
-            self.radius,
+            self.options['left'],
+            self.options['top'],
+            self.options['radius'],
             self.title,
-            self.preserveValues,
-            self.reformat_numbers,
+            "true" if self.options['preserveValues'] else "false",
+            self.options['reformat_numbers'],
         ))
         return '\n'.join(res)
 
 
 class OgraColumnChart(OgraChart):
-    grid_num = 4
-    left = 80
-    top = 30
-    height = 200
-    width = 320
-    reformat_numbers = 'true'
+    type = 'column'
 
     def __init__(self, name, **kwargs):
         super(OgraColumnChart, self).__init__(name, **kwargs)
+        self.options.update({
+            'left': 80,
+            'top': 30,
+            'height': 200,
+            'width': 320,
+            'grid_num': 4,
+            'reformat_numbers': True,
+        })
 
     @property
     def dom_id(self):
@@ -120,30 +143,33 @@ class OgraColumnChart(OgraChart):
     @property
     def javascript(self):
         res = []
-        res.append('var %s_data = %s;' % (self.dom_id, simplejson.dumps(self.data)))
+        res.append('var %s_data = %s;' % (self.dom_id, json.dumps(self.data)))
         res.append("Ogra.graph('%s', %s_data, 'column', '%s', { x: %s, y: %s, gwidth: %s, gheight: %s, grid_num: %s, title: '%s', reformat_numbers: %s });\n" % (
             self.dom_id,
             self.dom_id,
             self.backend,
-            self.left,
-            self.top,
-            self.width,
-            self.height,
-            self.grid_num,
+            self.options['left'],
+            self.options['top'],
+            self.options['width'],
+            self.options['height'],
+            self.options['grid_num'],
             self.title,
-            self.reformat_numbers,
+            "true" if self.options['reformat_numbers'] else "false",
         ))
         return '\n'.join(res)
 
 
 class OgraLineChart(OgraChart):
-    left = 80
-    top = 30
-    height = 500
-    width = 1000
+    type = 'line'
 
     def __init__(self, name, **kwargs):
         super(OgraLineChart, self).__init__(name, **kwargs)
+        self.options.update({
+            'left': 80,
+            'top': 30,
+            'height': 500,
+            'width': 1000,
+        })
 
     @property
     def dom_id(self):
@@ -152,15 +178,15 @@ class OgraLineChart(OgraChart):
     @property
     def javascript(self):
         res = []
-        res.append('var %s_data = %s;' % (self.dom_id, simplejson.dumps(self.data)))
+        res.append('var %s_data = %s;' % (self.dom_id, json.dumps(self.data)))
         res.append("Ogra.graph('%s', %s_data, 'line', '%s', { x: %d, y: %d, gwidth: %d, gheight: %d, title: '%s' });\n" % (
             self.dom_id,
             self.dom_id,
             self.backend,
-            self.left,
-            self.top,
-            self.width,
-            self.height,
+            self.options['left'],
+            self.options['top'],
+            self.options['width'],
+            self.options['height'],
             self.title,
         ))
         return '\n'.join(res)
