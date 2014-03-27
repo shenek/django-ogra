@@ -68,7 +68,9 @@ class OgraChart(object):
 
     @property
     def dom_id(self):
-        return self.name
+        if self.type:
+            return "chart-%s-%s" % (self.name, self.type)
+        return "chart-%s" % self.name
 
     @property
     def data(self):
@@ -92,10 +94,6 @@ class OgraPieChart(OgraChart):
 
     def __init__(self, name, **kwargs):
         super(OgraPieChart, self).__init__(name, **kwargs)
-
-    @property
-    def dom_id(self):
-        return "%s_pie" % self.name
 
     @property
     def javascript(self):
@@ -122,10 +120,6 @@ class OgraColumnChart(OgraChart):
         super(OgraColumnChart, self).__init__(name, **kwargs)
 
     @property
-    def dom_id(self):
-        return "%s_bar" % self.name
-
-    @property
     def javascript(self):
         res = []
         res.append('var %s_data = %s;' % (self.dom_id, json.dumps(self.data)))
@@ -149,10 +143,6 @@ class OgraLineChart(OgraChart):
 
     def __init__(self, name, **kwargs):
         super(OgraLineChart, self).__init__(name, **kwargs)
-
-    @property
-    def dom_id(self):
-        return "%s_line" % self.name
 
     @property
     def javascript(self):
