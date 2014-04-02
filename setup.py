@@ -29,5 +29,6 @@ setup(
         'Topic :: Internet :: WWW/HTTP',
         'Topic :: Internet :: WWW/HTTP :: Dynamic Content',
     ],
+    provides=['ogra'],
     requires=['django (>=1.5.1)'],
 )
