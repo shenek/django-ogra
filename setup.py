@@ -14,7 +14,7 @@ setup(
     license='MIT License',
     description='A Django app to create graphs using OGRA.',
     long_description=README,
-    url='http://www.example.com/',
+    url='https://github.com/shenek/django-ogra/',
     author='Stepan Henek',
     author_email='stepan.henek@nic.cz',
     classifiers=[
