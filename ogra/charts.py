@@ -1,5 +1,6 @@
-from django.utils import simplejson
+import json
 from django.db.models.query import QuerySet
+
 
 def convert_to_data_table(data, fields=None, label_formater=None):
     res = {}
@@ -87,7 +88,7 @@ class OgraPieChart(OgraChart):
     @property
     def javascript(self):
         res = []
-        res.append('var %s_data = %s;' % (self.dom_id, simplejson.dumps(self.data)))
+        res.append('var %s_data = %s;' % (self.dom_id, json.dumps(self.data)))
         res.append("Ogra.graph('%s', %s_data, 'pie', '%s', { x: %s, y: %s, radius: %s, title: '%s', preserveValues: %s, reformat_numbers: '%s' });\n" % (
             self.dom_id,
             self.dom_id,
@@ -120,7 +121,7 @@ class OgraColumnChart(OgraChart):
     @property
     def javascript(self):
         res = []
-        res.append('var %s_data = %s;' % (self.dom_id, simplejson.dumps(self.data)))
+        res.append('var %s_data = %s;' % (self.dom_id, json.dumps(self.data)))
         res.append("Ogra.graph('%s', %s_data, 'column', '%s', { x: %s, y: %s, gwidth: %s, gheight: %s, grid_num: %s, title: '%s', reformat_numbers: %s });\n" % (
             self.dom_id,
             self.dom_id,
@@ -152,7 +153,7 @@ class OgraLineChart(OgraChart):
     @property
     def javascript(self):
         res = []
-        res.append('var %s_data = %s;' % (self.dom_id, simplejson.dumps(self.data)))
+        res.append('var %s_data = %s;' % (self.dom_id, json.dumps(self.data)))
         res.append("Ogra.graph('%s', %s_data, 'line', '%s', { x: %d, y: %d, gwidth: %d, gheight: %d, title: '%s' });\n" % (
             self.dom_id,
             self.dom_id,
